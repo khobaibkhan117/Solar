@@ -1,0 +1,20 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: ./backend
+    container_name: solar-backend
+    ports:
+      - "3001:3001"
+    env_file:
+      - ./backend/.env
+
+  frontend:
+    build:
+      context: ./frontend
+    container_name: solar-frontend
+    ports:
+      - "3000:3000"
+    depends_on:
+      - backend

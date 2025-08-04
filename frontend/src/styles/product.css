@@ -1,0 +1,19 @@
+.listingProductTitle{
+    position: absolute;
+    left: 0; 
+  right: 0; 
+  margin-left: auto; 
+  margin-right: auto; 
+
+}
+.productListingCard{
+    border: 1px solid #29B3FD;
+    border-radius: 10px;
+
+}
+.productListingButton{
+    border: 1px solid #29B3FD;
+    border-radius: 5px;
+    color: #29B3FD;
+
+}

@@ -1,0 +1,28 @@
+replicaCount: 1
+
+image:
+  repository: solar-frontend
+  pullPolicy: IfNotPresent
+  tag: latest
+
+containerPort: 80
+
+service:
+  type: ClusterIP
+  port: 80
+
+config:
+  title: "Solar One"
+  version: "v1.0"
+  baseUrl: "/api"
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: {}
+  hosts:
+    - host: mynextstep.shop
+      paths:
+        - path: /
+          pathType: Prefix
+  tls: []

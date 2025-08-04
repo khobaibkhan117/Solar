@@ -1,0 +1,26 @@
+replicaCount: 1
+
+image:
+  repository: solar-backend
+  pullPolicy: IfNotPresent
+  tag: latest
+
+containerPort: 3001
+
+service:
+  type: ClusterIP
+  port: 80
+
+secret:
+  name: backend-secret
+
+ingress:
+  enabled: true
+  className: "nginx"
+  annotations: {}
+  hosts:
+    - host: api.mynextstep.shop
+      paths:
+        - path: /api
+          pathType: Prefix
+  tls: []

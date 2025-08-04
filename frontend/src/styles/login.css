@@ -1,0 +1,19 @@
+.loginImg{
+    height: auto;
+    max-height: 150px;
+
+}
+
+.solar_img{
+    width: 90%;
+    height: 110%;
+    
+}
+.textField{
+    background-color: #F7FAFC;
+    color: #4A5568;
+}
+.button{
+    background-color: #000D6B;
+
+}

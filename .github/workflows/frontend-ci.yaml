@@ -28,9 +28,16 @@ jobs:
     - name: Build, tag, and push frontend image
       run: |
         docker build -t solar-frontend ./frontend
-        docker tag solar-frontend:latest ${{ secrets.ECR_FRONTEND }}:latest
-        docker push ${{ secrets.ECR_FRONTEND }}:latest
+        docker tag solar-frontend:latest ${{ steps.login-ecr.outputs.registry }}/solar-frontend:latest
+        docker push ${{ steps.login-ecr.outputs.registry }}/solar-frontend:latest
 
-    - name: Apply Kubernetes manifests
+    - name: Setup kubeconfig
       run: |
-        kubectl apply -f k8s/frontend-deployment.yaml
+        mkdir -p ~/.kube
+        echo "${{ secrets.KUBECONFIG_CONTENT }}" > ~/.kube/config
+
+    - name: Deploy Frontend via Helm
+      run: |
+        helm upgrade --install frontend ./helm/frontend \
+          --set image.repository=${{ steps.login-ecr.outputs.registry }}/solar-frontend \
+          --set image.tag=latest

@@ -28,9 +28,16 @@ jobs:
     - name: Build, tag, and push backend image
       run: |
         docker build -t solar-backend ./backend
-        docker tag solar-backend:latest ${{ secrets.ECR_BACKEND }}:latest
-        docker push ${{ secrets.ECR_BACKEND }}:latest
+        docker tag solar-backend:latest ${{ steps.login-ecr.outputs.registry }}/solar-backend:latest
+        docker push ${{ steps.login-ecr.outputs.registry }}/solar-backend:latest
 
-    - name: Apply Kubernetes manifests
+    - name: Setup kubeconfig
       run: |
-        kubectl apply -f k8s/backend-deployment.yaml
+        mkdir -p ~/.kube
+        echo "${{ secrets.KUBECONFIG_CONTENT }}" > ~/.kube/config
+
+    - name: Deploy Backend via Helm
+      run: |
+        helm upgrade --install backend ./helm/backend \
+          --set image.repository=${{ steps.login-ecr.outputs.registry }}/solar-backend \
+          --set image.tag=latest
